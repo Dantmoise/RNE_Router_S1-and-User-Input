@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleLogin = () => {
-    // Add your login logic here
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Error', 'Please enter email and password');
+      return;
+    }
+    setMessage(`Logging in with: ${email} / ${password}`);
     console.log('Logging in with:', email, password);
   };
 
@@ -15,18 +27,19 @@ const LoginScreen: React.FC = () => {
       <Text style={styles.title}>Sign In</Text>
 
       <TextInput
+        style={styles.input}
         placeholder="E-mail or Phone number"
         value={email}
         onChangeText={setEmail}
-        style={styles.input}
         keyboardType="email-address"
+        autoCapitalize="none"
       />
 
       <TextInput
+        style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
-        style={styles.input}
         secureTextEntry
       />
 
@@ -34,24 +47,8 @@ const LoginScreen: React.FC = () => {
         <Text style={styles.buttonText}>Login</Text>
       </Pressable>
 
- 
-    <Text style={styles.orText}>OR</Text>
-
-
-
-
-
- <Pressable style={styles.button2} onPress={handleLogin}>
-        <Text style={styles.buttonText2}>Login With Facebook</Text>
-      </Pressable>
-
-
-
+      {message ? <Text style={styles.message}>{message}</Text> : null}
     </View>
-
-
-
-
   );
 };
 
@@ -60,20 +57,15 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
     padding: 20,
+    justifyContent: 'flex-start',
     backgroundColor: '#fff',
   },
   title: {
     fontSize: 32,
+    color: '#FF6984',
     marginBottom: 24,
-  alignSelf: 'flex-start',
-  marginTop: 1,
-  color: '#FF6984',
-   
   },
-
-
   input: {
     height: 48,
     borderColor: '#ccc',
@@ -86,33 +78,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF6984',
     paddingVertical: 14,
     borderRadius: 8,
+    marginTop: 10,
   },
- button2: {
-    backgroundColor: '#2e86de',
-    paddingVertical: 14,
-    borderRadius: 8,
- },
-
-
   buttonText: {
     color: '#fff',
-    textAlign: 'center',
     fontSize: 16,
+    textAlign: 'center',
   },
-buttonText2: {
-    color: '#fff',
-    textAlign: 'center',
+  message: {
+    marginTop: 20,
     fontSize: 16,
-
-},
-orText: {
-  textAlign: 'center',
-  marginVertical: 12,
-  fontSize: 16,
-  color: '#666',
-  fontWeight: '500',
-},
-
-
-
+    color: 'green',
+  },
 });
