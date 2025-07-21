@@ -11,15 +11,20 @@ import {
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const handleLogin = () => {
     if (!email.trim() || !password.trim()) {
       Alert.alert('Error', 'Please enter email and password');
       return;
     }
-    setMessage(`Logging in with: ${email} / ${password}`);
-    console.log('Logging in with:', email, password);
+    setSubmitted(true);  // mark form as submitted to show info below
+  };
+
+  const handleClear = () => {
+    setEmail('');
+    setPassword('');
+    setSubmitted(false);
   };
 
   return (
@@ -47,7 +52,17 @@ const LoginScreen: React.FC = () => {
         <Text style={styles.buttonText}>Login</Text>
       </Pressable>
 
-      {message ? <Text style={styles.message}>{message}</Text> : null}
+      <Pressable style={[styles.button, styles.clearButton]} onPress={handleClear}>
+        <Text style={styles.buttonText}>Clear</Text>
+      </Pressable>
+
+      {submitted && (
+        <View style={styles.submittedInfo}>
+          <Text style={styles.submittedTitle}>Entered Details:</Text>
+          <Text>Email: {email}</Text>
+          <Text>Password: {password}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -79,15 +94,26 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 8,
     marginTop: 10,
+    alignItems: 'center',
+  },
+  clearButton: {
+    backgroundColor: '#aaa',
+    marginTop: 10,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
   },
-  message: {
+  submittedInfo: {
     marginTop: 20,
+    padding: 15,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 8,
+  },
+  submittedTitle: {
+    fontWeight: 'bold',
+    marginBottom: 5,
     fontSize: 16,
-    color: 'green',
   },
 });
